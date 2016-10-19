@@ -1,0 +1,11 @@
+.idea/
+log/
+logs/
+*.iml
+
+.DS_Store
+scgi_temp/
+uwsgi_temp/
+proxy_temp/
+fastcgi_temp/
+client_body_temp/
