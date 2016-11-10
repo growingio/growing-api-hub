@@ -1,0 +1,4 @@
+upstream growing {
+    server api.growingio.com;
+    keepalive 100;
+}

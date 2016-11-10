@@ -9,3 +9,7 @@ uwsgi_temp/
 proxy_temp/
 fastcgi_temp/
 client_body_temp/
+
+conf/https.conf
+conf/env.lua
+conf/upstreams.conf
