@@ -6,7 +6,7 @@ Growing HUB 为 SDK 采集的数据提供一个中转的功能，即数据先经
 
 - 首先从 GitHub 上 `clone` 到本地
 ```
-git clone https://github.com/growingio/growingio-hub.git
+git clone https://github.com/growingio/growing-api-hub.git
 ```
 - 在您的服务器上需要安装 [OpenResty](https://openresty.org/en/)，具体的安装方法请参考[官方文档](https://openresty.org/en/installation.html)
 - 在 nginx.conf 文件中配置您的 SSL 证书
