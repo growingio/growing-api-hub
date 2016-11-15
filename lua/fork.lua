@@ -29,16 +29,49 @@ function _M.exec(self)
     end
     local headers = ngx.req.get_headers()
     headers["X-Real-IP"] = ngx.var.remote_addr
-    local body = ngx.req.get_body_data()
-    local httpc = http.new()
-    local res, err = httpc:request_uri("http://" .. self.host .. ngx.var.uri .. query_string, {
-        method = "POST",
-        body = body,
-        headers = headers
-    })
-    if not res then
-        log(ERR, "Fork :", err)
+
+    if ngx.req.get_method() == 'POST' then
+        local data = ngx.req.get_body_data()
+        if data then
+            body = data
+        else
+            local filename = ngx.req.get_body_file()
+            if filename then
+                handle = io.open(filename)
+                body = handle:read '*a'
+            else
+                body = nil
+            end
+        end
+
+        if not body then
+            log(ERR, "Request Body is nil")
+            return
+        end
+
+        local httpc = http.new()
+        local res, err = httpc:request_uri("http://" .. self.host .. ngx.var.uri .. query_string, {
+            method = "POST",
+            body = body,
+            headers = headers
+        })
+        if not res then
+            log(ERR, "Fork :", err)
+        end
     end
+
+    if ngx.req.get_method() == 'GET' then
+        local httpc = http.new()
+        local res, err = httpc:request_uri("http://" .. self.host .. ngx.var.uri .. query_string, {
+            method = "GET",
+            headers = headers
+        })
+        if not res then
+            log(ERR, "Fork :", err)
+        end
+    end
+
+
 end
 
 function _M.new(opts)
