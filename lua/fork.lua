@@ -31,19 +31,21 @@ function _M.exec(self)
     headers["X-Real-IP"] = ngx.var.remote_addr
     local body = ngx.req.get_body_data()
     local httpc = http.new()
-    local res, err = httpc:request_uri("http://" .. self.host .. ngx.var.uri .. query_string, {
-        method = "POST",
-        body = body,
-        headers = headers
-    })
-    if not res then
-        log(ERR, "Fork :", err)
+    for host in pairs(self.hosts) do
+        local res, err = httpc:request_uri("http://" .. host .. ngx.var.uri .. query_string, {
+            method = "POST",
+            body = body,
+            headers = headers
+        })
+        if not res then
+            log(ERR, "Fork :", err)
+        end
     end
 end
 
 function _M.new(opts)
     local self = {
-        host = opts.host or "127.0.0.1"
+        hosts = opts.hosts or {"127.0.0.1"}
     }
     return setmetatable(self, mt)
 end
